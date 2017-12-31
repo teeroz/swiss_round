@@ -16,7 +16,7 @@ ALLOWED_HOSTS = ['10.127.118.22']
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_ROOT = '/home1/irteam/myapps/gengoz/static'
+STATIC_ROOT = '/home/ec2-user/myapps/swiss-round/static'
 
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
