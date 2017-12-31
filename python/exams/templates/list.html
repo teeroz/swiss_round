@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block head %}
+{% endblock %}
+
+{% block body %}
+    <div class="container" style="margin-top: 3em; margin-bottom: 2em;">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>문제</th>
+                    <th>발음</th>
+                    <th>정답</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for memory in memories %}
+                <tr>
+                    <td>{{ memory.question }}</td>
+                    <td>{{ memory.word.pronunciation }}</td>
+                    <td>{{ memory.answer }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

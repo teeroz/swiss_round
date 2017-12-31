@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        .vertical-center {
+            min-width: 100%;
+            min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+            min-height: 100vh; /* These two lines are counted as one :-)       */
+
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="vertical-center">
+        <div class="container">
+            <h1 class="text-center">お疲れ様でした</h1>
+        </div>
+    </div>
+{% endblock %}

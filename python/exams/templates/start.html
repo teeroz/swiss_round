@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        td h1 {
+            margin-top: 0em;
+        }
+
+        .vertical-center {
+            min-width: 100%;
+            min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+            min-height: 100vh; /* These two lines are counted as one :-)       */
+
+            display: flex;
+            align-items: center;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="vertical-center">
+        <div class="container-fluid text-center">
+            {% load humanize %}
+
+            <table style="display: inline;">
+                <tr>
+                    <td><h1>신규 단어 :&nbsp;</h1></td>
+                    <td style="text-align: right;"><h1>{{ new_count|intcomma }}개</h1></td>
+                </tr>
+                <tr>
+                    <td><h1>복습 단어 :&nbsp;</h1></td>
+                    <td style="text-align: right;"><h1>{{ remain_count|intcomma }}개</h1></td>
+                </tr>
+                <tr>
+                    <td><h1>학습 진도 :&nbsp;</h1></td>
+                    <td style="text-align: right;"><h1>{{ study_score|intcomma }}점</h1></td>
+                </tr>
+            </table>
+
+            <div class="text-center" style="margin-top: 10em;">
+                {% if include_random_memories %}
+                <a href="{% url 'do_add_random' book_id=book_id exam_type=exam_type %}" class="btn btn-lg btn-danger" style="width: 7em; margin-right: 1em;">랜덤추가</a>
+                {% endif %}
+                {% if new_count > 0 %}
+                <a href="{% url 'do_next' book_id=book_id exam_type=exam_type %}" class="btn btn-lg btn-info" style="width: 7em; margin-right: 1em;">다음단계</a>
+                {% endif %}
+                {% if new_count <= 0 and remain_count > 0 %}
+                <a href="{% url 'do_review' book_id=book_id exam_type=exam_type %}" class="btn btn-lg btn-info" style="width: 7em;">복습하기</a>
+                {% endif %}
+                <!-- <a href="{% url 'list' book_id=book_id exam_type=exam_type %}" class="btn btn-lg btn-success" style="margin-left: 2em; width: 7em;">LIST</a> -->
+                <!-- <a href="{% url 'new_words' book_id=book_id exam_type=exam_type %}" class="btn btn-lg btn-danger" style="margin-left: 2em; width: 7em;">NEW</a> -->
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

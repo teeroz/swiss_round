@@ -1,0 +1,41 @@
+<template>
+  <div>
+    <the-navbar title="리그 생성">
+    </the-navbar>
+
+    <the-player-form
+      :player="player"
+      :submitCallback="submit"/>
+  </div>
+</template>
+
+<script>
+import ThePlayerForm from '@/components/ThePlayerForm'
+
+export default {
+  name: 'PlayerAddPage',
+
+  components: {
+    'the-player-form': ThePlayerForm
+  },
+
+  data: function () {
+    return {
+      player: {}
+    }
+  },
+
+  methods: {
+    submit: function () {
+      this.$axios.swiss.post(`league/${this.$route.params.league_id}/player`, this.player)
+        .then(res => {
+          this.player = {}
+        })
+    }
+  }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>
