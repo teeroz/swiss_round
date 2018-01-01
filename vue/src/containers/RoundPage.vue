@@ -67,7 +67,7 @@ export default {
   },
 
   created: function () {
-    this.$axios.swiss.get(`league/${this.$route.params.league_id}/round/${this.$route.params.round_id}/matches`)
+    this.$axios.swiss.get(`league/${this.$route.params.league_id}/round/${this.$route.params.round_id}`)
       .then(res => {
         this.round = res.data.round
         this.matches = res.data.matches

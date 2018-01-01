@@ -10,7 +10,7 @@ from swiss.models.round import Round
 from swiss.models.match import Match
 
 
-class RoundTestCase(TestCase):
+class Tests(TestCase):
     league = {}
     players = {}
     rounds = {}

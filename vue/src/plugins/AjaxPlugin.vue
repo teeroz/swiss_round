@@ -8,6 +8,7 @@ export default {
         _request: function (method, path, params) {
           return new Promise((resolve, reject) => {
             method(`http://13.125.19.231:8080/swiss/api/${path}`, params)
+            // method(`http://localhost:8000/swiss/api/${path}`, params)
             .then(res => resolve(res))
             .catch(e => {
               if (e.response) {

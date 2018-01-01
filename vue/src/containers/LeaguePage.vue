@@ -111,16 +111,8 @@ export default {
   created: function () {
     this.$axios.swiss.get(`league/${this.$route.params.league_id}`)
       .then(res => {
-        this.league = res.data
-      })
-
-    this.$axios.swiss.get(`league/${this.$route.params.league_id}/players`)
-      .then(res => {
+        this.league = res.data.league
         this.players = res.data.players
-      })
-
-    this.$axios.swiss.get(`league/${this.$route.params.league_id}/rounds`)
-      .then(res => {
         this.rounds = res.data.rounds
       })
   },
