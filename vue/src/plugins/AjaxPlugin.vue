@@ -7,7 +7,7 @@ export default {
       swiss: {
         _request: function (method, path, params) {
           return new Promise((resolve, reject) => {
-            method(`http://127.0.0.1:8000/swiss/api/${path}`, params)
+            method(`http://13.125.19.231:8080/swiss/api/${path}`, params)
             .then(res => resolve(res))
             .catch(e => {
               if (e.response) {
