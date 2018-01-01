@@ -135,14 +135,14 @@ export default {
     drop: function () {
       this.$axios.swiss.put(`league/${this.$route.params.league_id}/player/${this.$route.params.player_id}`, { is_dropped: true })
         .then(res => {
-          this.player = res.data
+          this.player = res.data.player
         })
     },
 
     undrop: function () {
       this.$axios.swiss.put(`league/${this.$route.params.league_id}/player/${this.$route.params.player_id}`, { is_dropped: false })
         .then(res => {
-          this.player = res.data
+          this.player = res.data.player
         })
     },
 
