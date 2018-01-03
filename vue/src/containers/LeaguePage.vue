@@ -140,12 +140,12 @@ export default {
     },
 
     showPlayers: function () {
-      this.$router.replace({ name: 'league', params: { league_id: this.$route.params.league_id }, query: { mode: 'PLAYERS' } })
+      this.$router.push({ name: 'league', params: { league_id: this.$route.params.league_id }, query: { mode: 'PLAYERS' } })
       this.mode = 'PLAYERS'
     },
 
     showRounds: function () {
-      this.$router.replace({ name: 'league', params: { league_id: this.$route.params.league_id }, query: { mode: 'ROUNDS' } })
+      this.$router.push({ name: 'league', params: { league_id: this.$route.params.league_id }, query: { mode: 'ROUNDS' } })
       this.mode = 'ROUNDS'
     },
 
