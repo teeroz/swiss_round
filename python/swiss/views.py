@@ -219,6 +219,10 @@ def v_round(request: HttpRequest, league_id: int) -> HttpResponse:
 def start_new_round(league_id: int) -> dict:
     m_league = get_object_or_404(League, pk=league_id)
     m_round = lib_round.start_new_round(m_league)
+
+    if m_round is None:
+        return {'id': None}
+
     return model_to_dict(m_round)
 
 
@@ -240,10 +244,10 @@ def get_round(league_id: int, round_id: int) -> dict:
 
 def __get_matches(m_round: Round) -> List[dict]:
     players, matches = m_round.league.get_players_and_matches()  # type: Set[Player], List[Match]
-    lib_league.calculate_matches_result([m_match for m_match in matches if m_match.round_id < m_round.id])
+    lib_league.calculate_matches_result([m for m in matches if m.round_id < m_round.id])
 
     result = []
-    matches = [m_match for m_match in matches if m_match.round_id == m_round.id]
+    matches = [m for m in matches if m.round_id == m_round.id]
     for match in matches:
         dict_match = model_to_dict(match)
         dict_match['player1'] = match.player1.to_dict()

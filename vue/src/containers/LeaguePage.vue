@@ -147,7 +147,15 @@ export default {
 
     startNewRound: function () {
       this.$axios.swiss.post(`league/${this.$route.params.league_id}/round`)
-        .then(res => this.$router.push({ name: 'round', params: { league_id: this.league.id, round_id: res.data.id } }))
+        .then(res => {
+          console.log(res.data)
+          if (!res.data['id']) {
+            alert('더 이상 라운드를 만들 수 없습니다.')
+            return
+          }
+
+          this.$router.push({ name: 'round', params: { league_id: this.league.id, round_id: res.data.id } })
+        })
     }
   }
 }

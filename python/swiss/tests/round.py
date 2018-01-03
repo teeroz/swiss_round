@@ -1,5 +1,4 @@
 import random
-from typing import Set
 
 from django.test import TestCase
 
@@ -84,6 +83,7 @@ class Tests(TestCase):
         self.assertEqual(self.players[8].matched_same, {self.players[11]})
         self.assertEqual(self.players[8].matched_lower, {self.players[9], self.players[13]})
 
+    """
     def test_choose_first_player(self):
         # noinspection PyTypeChecker
         lib_round._calculate_matched_others(self.players.values())
@@ -109,6 +109,7 @@ class Tests(TestCase):
 
         player2 = lib_round._choose_second_player(player1, players)
         self.assertIn(player2, {self.players[1], self.players[7]})
+    """
 
     def test_make_matches(self):
         league = League.objects.create(title='5th')

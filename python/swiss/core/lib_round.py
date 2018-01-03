@@ -136,7 +136,8 @@ def _choose_first_player(players: Set[Player]) -> Optional[Player]:
     _calculate_matched_others(players)
 
     sorted_players = sorted(players,
-                            key=lambda p: (p.wins, len(p.matched_same), len(p.matched_lower), random.random()),
+                            # key=lambda p: (p.wins, len(p.matched_same), len(p.matched_lower), random.random()),
+                            key=lambda p: (p.wins, random.random()),
                             reverse=True)
     return sorted_players[0]
 
@@ -163,7 +164,8 @@ def _choose_second_player(player: Player, players: Set[Player]) -> Optional[Play
     _calculate_matched_others(candidates)
 
     sorted_players = sorted(candidates,
-                            key=lambda p: (p.wins, len(p.matched_same), len(p.matched_lower), random.random()),
+                            # key=lambda p: (p.wins, len(p.matched_same), len(p.matched_lower), random.random()),
+                            key=lambda p: (p.wins, random.random()),
                             reverse=True)
     return sorted_players[0]
 
