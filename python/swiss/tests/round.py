@@ -52,6 +52,10 @@ class Tests(TestCase):
                                              score1=1, score2=0)
                 self.matches.append(match)
 
+        for m_player in self.players.values():
+            m_player.wins = 0
+            m_player.matched = set()
+
         # noinspection PyTypeChecker
         lib_round._calculate_wins(self.matches)
         # noinspection PyTypeChecker
@@ -135,6 +139,10 @@ class Tests(TestCase):
                                              player1=winner, player2=loser,
                                              score1=1, score2=0)
                 matches.add(match)
+
+        for m_player in self.players.values():
+            m_player.wins = 0
+            m_player.matched = set()
 
         lib_round._calculate_wins(matches)
         lib_round._calculate_matched(matches)

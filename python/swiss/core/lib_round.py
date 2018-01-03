@@ -36,12 +36,18 @@ def start_new_round(league: League) -> Optional[Round]:
 def _get_matches_of_new_round(players: Set[Player], matches: Set[Match]) -> Optional[list]:
     result = []
 
-    _calculate_wins(matches)
-    # 부전승은 항상 제일 마지막에 나오도록 하기 위함
-    for player in players:
-        if player.is_ghost:
-            player.wins = -1
+    for m_player in players:
+        m_player.wins = 0
+        m_player.matched = set()
 
+    _calculate_wins(matches)
+
+    # 부전승은 항상 제일 마지막에 나오도록 하기 위함
+    for m_player in players:
+        if m_player.is_ghost:
+            m_player.wins = -1
+
+    _calculate_family(players)
     _calculate_matched(matches)
 
     # 드랍한 사용자 제외
@@ -85,6 +91,14 @@ def _get_matches_of_new_round(players: Set[Player], matches: Set[Match]) -> Opti
     for player1, player2, blacklist in result_stack:
         result.append((player1, player2))
 
+    # 부전승이 들어간 경기는 제일 마지막에 넣는다
+    for idx, value in enumerate(result):
+        player1, player2 = value
+        if player2.is_ghost:
+            match = result.pop(idx)
+            result.append(match)
+            break
+
     return result
 
 
@@ -100,14 +114,17 @@ def _calculate_wins(matches: Set[Match]) -> None:
             match.player2.wins += 1
 
 
-def _calculate_matched(matches: Set[Match]) -> None:
-    for match in matches:
-        match.player1.matched = set()
-        match.player2.matched = set()
+def _calculate_family(players: Set[Player]) -> None:
+    for m_player in players:
+        family_member_ids = m_player.family.values_list('id', flat=True)
+        family = {p for p in players if (p.id in family_member_ids)}
+        m_player.matched.update(family)
 
-    for match in matches:
-        match.player1.matched.add(match.player2)
-        match.player2.matched.add(match.player1)
+
+def _calculate_matched(matches: Set[Match]) -> None:
+    for m_match in matches:
+        m_match.player1.matched.add(m_match.player2)
+        m_match.player2.matched.add(m_match.player1)
 
 
 def _choose_first_player(players: Set[Player]) -> Optional[Player]:
