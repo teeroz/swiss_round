@@ -1,6 +1,7 @@
 import json
 from typing import List, Set
 
+from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
 from django.http import HttpRequest
 from django.http import HttpResponse
@@ -132,13 +133,13 @@ def v_a_player(request: HttpRequest, league_id: int, player_id: int) -> HttpResp
 
 
 def get_player(league_id: int, player_id: int) -> dict:
-    m_player = get_object_or_404(Player, pk=player_id, league_id=league_id)  # type: Player
+    m_this_player = get_object_or_404(Player, pk=player_id, league_id=league_id)  # type: Player
 
-    players, matches = m_player.league.get_players_and_matches()  # type: Set[Player], List[Match]
+    players, matches = m_this_player.league.get_players_and_matches()  # type: Set[Player], List[Match]
     lib_league.calculate_matches_result(matches)
     lib_league.calculate_rankings(players)
 
-    m_player = [m_player for m_player in players if m_player.id == player_id][0]
+    m_this_player = [m_player for m_player in players if m_player.id == player_id][0]
 
     # matches_history
     dict_matches_history = []
@@ -155,7 +156,16 @@ def get_player(league_id: int, player_id: int) -> dict:
 
         dict_matches_history.append(dict_match)
 
-    return {'player': m_player.to_dict(), 'matches': dict_matches_history}
+    dict_this_player = m_this_player.to_dict()
+
+    # family
+    family = [m_player for m_player in players if (m_player.id in m_this_player.family.values_list('id', flat=True))]
+    dict_family = []
+    for m_family_member in family:
+        dict_family.append(m_family_member.to_dict())
+    dict_this_player['family'] = dict_family
+
+    return {'player': dict_this_player, 'matches': dict_matches_history}
 
 
 def edit_player(league_id: int, player_id: int, data: dict) -> dict:
@@ -167,6 +177,14 @@ def edit_player(league_id: int, player_id: int, data: dict) -> dict:
         m_player.save()
     elif 'is_dropped' in data:
         m_player.is_dropped = data['is_dropped']
+        m_player.save()
+    elif 'family' in data:
+        for family_member_id in data['family']:
+            try:
+                m_family_member = Player.objects.get(pk=family_member_id)
+                m_player.family.add(m_family_member)
+            except ObjectDoesNotExist:
+                continue
         m_player.save()
 
     return get_player(league_id, player_id)
