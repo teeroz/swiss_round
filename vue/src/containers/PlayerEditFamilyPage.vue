@@ -42,7 +42,7 @@ export default {
     return {
       thisPlayer: { name: '' },
       players: [],
-      familyMembers: [],
+      familyMembers: []
     }
   },
 
@@ -67,7 +67,7 @@ export default {
     },
 
     submit: function () {
-      this.$axios.swiss.put(`league/${this.$route.params.league_id}/player/${this.$route.params.player_id}`, 
+      this.$axios.swiss.put(`league/${this.$route.params.league_id}/player/${this.$route.params.player_id}`,
                             { 'family': this.familyMembers })
         .then(res => this.$router.go(-1))
     }
