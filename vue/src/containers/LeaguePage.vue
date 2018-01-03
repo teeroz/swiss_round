@@ -134,6 +134,7 @@ export default {
         return
       }
 
+      this.$refs.loading.start()
       this.$axios.swiss.delete(`league/${this.$route.params.league_id}`)
         .then(this.goBack)
     },
@@ -149,11 +150,13 @@ export default {
     },
 
     startNewRound: function () {
+      this.$refs.loading.start()
+
       this.$axios.swiss.post(`league/${this.$route.params.league_id}/round`)
         .then(res => {
-          console.log(res.data)
           if (!res.data['id']) {
             alert('더 이상 라운드를 만들 수 없습니다.')
+            this.$refs.loading.stop()
             return
           }
 

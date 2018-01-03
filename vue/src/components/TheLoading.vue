@@ -21,6 +21,10 @@ export default {
   },
 
   methods: {
+    start: function () {
+      this.isLoading = true
+    },
+
     stop: function () {
       this.isLoading = false
     }
@@ -36,6 +40,6 @@ export default {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    padding-bottom: 3.5rem;
+    padding-bottom: 7.0rem;
   }
 </style>
