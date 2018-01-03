@@ -1,6 +1,6 @@
 <template>
   <div>
-    <the-navbar title="리그 생성">
+    <the-navbar title="플레이어 추가">
     </the-navbar>
 
     <the-player-form
