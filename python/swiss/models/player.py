@@ -12,6 +12,7 @@ class Player(models.Model):
     is_dropped = models.BooleanField(default=False)
     create_dt = models.DateTimeField(auto_now_add=True)
     modify_dt = models.DateTimeField(auto_now=True)
+    is_family = models.BooleanField(default=False)
     family = models.ManyToManyField("self", symmetrical=True, blank=True)
 
     wins = 0

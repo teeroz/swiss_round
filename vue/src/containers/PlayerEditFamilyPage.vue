@@ -7,7 +7,7 @@
       <div class="card mt-3">
         <ul class="list-group list-group-flush">
           <li 
-            v-for="(player, index) in players"
+            v-for="player in players"
             :key="player.id"
             class="list-group-item align-items-center"
             >
@@ -55,7 +55,7 @@ export default {
         this.$axios.swiss.get(`league/${this.$route.params.league_id}`)
           .then(res => {
             const players = res.data.players.filter(player => player.id !== this.thisPlayer.id)
-            players.sort((a, b) => a.name > b.name)
+            players.sort((a, b) => (a.name > b.name ? 1 : -1))
             this.players = players
           })
       })

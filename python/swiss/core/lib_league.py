@@ -42,7 +42,8 @@ def calculate_rankings(players: Set[Player]) -> None:
         m_player.opponents_total_wins = sum([opponent.wins for opponent in m_player.matched_wins])
 
     sorted_players = sorted(players,
-                            key=lambda p: (p.wins * 3 + p.draws,
+                            key=lambda p: (not p.is_ghost,
+                                           p.wins * 3 + p.draws,
                                            p.opponents_total_wins,
                                            p.max_strikes_count,
                                            p.max_strikes_start * -1,

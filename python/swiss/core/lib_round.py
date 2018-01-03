@@ -103,19 +103,21 @@ def _get_matches_of_new_round(players: Set[Player], matches: Set[Match]) -> Opti
 
 
 def _calculate_wins(matches: Set[Match]) -> None:
-    for match in matches:
-        match.player1.wins = 0
-        match.player2.wins = 0
+    for m_match in matches:
+        m_match.player1.wins = 0
+        m_match.player2.wins = 0
 
-    for match in matches:
-        if match.score1 > match.score2:
-            match.player1.wins += 1
-        elif match.score2 > match.score1:
-            match.player2.wins += 1
+    for m_match in matches:
+        if m_match.score1 > m_match.score2:
+            m_match.player1.wins += 1
+        elif m_match.score2 > m_match.score1:
+            m_match.player2.wins += 1
 
 
 def _calculate_family(players: Set[Player]) -> None:
     for m_player in players:
+        if not m_player.is_family:
+            continue
         family_member_ids = m_player.family.values_list('id', flat=True)
         family = {p for p in players if (p.id in family_member_ids)}
         m_player.matched.update(family)

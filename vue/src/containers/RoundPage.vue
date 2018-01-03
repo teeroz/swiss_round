@@ -13,7 +13,7 @@
 
     <div class="list-group">
       <span
-         v-for="(match, index) in matches"
+         v-for="match in matches"
          :key="match.id"
          class="list-group-item border-left-0 border-right-0"
          >
@@ -95,6 +95,10 @@ export default {
     },
 
     goPlayerPage: function (player) {
+      if (player.is_ghost) {
+        return
+      }
+
       this.$router.push({ name: 'player', params: { league_id: this.$route.params.league_id, player_id: player.id } })
     }
   }

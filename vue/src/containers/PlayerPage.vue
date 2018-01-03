@@ -34,6 +34,14 @@
             <span>메모</span>
             <span class="text-muted">{{ player.memo }}</span>
           </li>
+          <li class="list-group-item d-flex justify-content-between align-items-center" v-if="player.family.length > 0">
+            <span>가족</span>
+            <span class="text-muted">
+              <template v-for="(familyMember, index) in player.family">
+                {{ familyMember.name }}<template v-if="index+1 < player.family.length">,</template>
+              </template>
+            </span>
+          </li>
           <li class="list-group-item d-flex justify-content-between align-items-center">
             <span>상태</span>
             <span class="text-muted">{{ player.is_dropped ? '기권' : '참가중' }}</span>
@@ -114,7 +122,7 @@ export default {
 
   data: function () {
     return {
-      player: { id: 0, name: '' },
+      player: { id: 0, name: '', family: [] },
       matches: []
     }
   },
@@ -153,6 +161,10 @@ export default {
     },
 
     goPlayerPage: function (player) {
+      if (player.is_ghost) {
+        return
+      }
+
       this.$router.push({ name: 'player', params: { league_id: this.$route.params.league_id, player_id: player.id } })
     }
   }

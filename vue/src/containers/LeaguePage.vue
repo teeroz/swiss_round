@@ -71,7 +71,7 @@
 
     <div class="list-group" v-if="mode === 'ROUNDS'">
       <router-link
-         v-for="(round, index) in rounds"
+         v-for="round in rounds"
          :to="{name: 'round', params: {league_id: round.league, round_id: round.id}}"
          :key="round.id"
          class="list-group-item list-group-item-action border-left-0 border-right-0"

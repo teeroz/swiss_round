@@ -180,13 +180,30 @@ def edit_player(league_id: int, player_id: int, data: dict) -> dict:
         m_player.is_dropped = data['is_dropped']
         m_player.save()
     elif 'family' in data:
+        for m_family_member in m_player.family.all():
+            m_family_member.family.clear()
+            m_family_member.is_family = False
+            m_family_member.save()
+
+        m_player.family.clear()
+        m_player.is_family = False
+        m_player.save()
+
+        family = [m_player]
         for family_member_id in data['family']:
             try:
                 m_family_member = Player.objects.get(pk=family_member_id)
-                m_player.family.add(m_family_member)
+                m_family_member.family.clear()
+                family.append(m_family_member)
             except ObjectDoesNotExist:
                 continue
-        m_player.save()
+        while family:
+            m_person = family.pop()
+            for m_family_member in family:
+                m_person.family.add(m_family_member)
+                m_family_member.is_family = True
+            m_person.is_family = True
+            m_person.save()
 
     return get_player(league_id, player_id)
 
