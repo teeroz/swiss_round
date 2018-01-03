@@ -56,6 +56,7 @@ export default {
       }
 
       this.submitCallback()
+        .then(() => this.$refs.name.focus())
     }
   }
 }

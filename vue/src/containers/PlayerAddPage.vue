@@ -27,7 +27,7 @@ export default {
 
   methods: {
     submit: function () {
-      this.$axios.swiss.post(`league/${this.$route.params.league_id}/player`, this.player)
+      return this.$axios.swiss.post(`league/${this.$route.params.league_id}/player`, this.player)
         .then(res => {
           this.player = {}
         })
