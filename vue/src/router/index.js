@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import AjaxPlugin from '@/plugins/AjaxPlugin'
 import TheNavbar from '@/components/TheNavbar'
+import TheLoading from '@/components/TheLoading'
 import LeaguesPage from '@/containers/LeaguesPage'
 import LeaguePage from '@/containers/LeaguePage'
 import LeagueCreatePage from '@/containers/LeagueCreatePage'
@@ -15,6 +16,7 @@ import RoundPage from '@/containers/RoundPage'
 Vue.use(Router)
 Vue.use(AjaxPlugin)
 Vue.component('the-navbar', TheNavbar)
+Vue.component('the-loading', TheLoading)
 
 export default new Router({
   routes: [

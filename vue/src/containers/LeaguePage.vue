@@ -13,80 +13,82 @@
       </div>
     </the-navbar>
 
-    <ul class="nav nav-tabs mt-2 league-tab">
-      <li class="nav-item">
-        <span class="nav-link" :class="{active: mode === 'PLAYERS'}" @click="showPlayers">
-          플레이어
-          <span 
-              class="badge badge-pill" 
-              :class="{'badge-primary': mode === 'PLAYERS', 'badge-secondary': mode !== 'PLAYERS'}"
-              >
-            {{ players.length }}
+    <the-loading ref="loading">
+      <ul class="nav nav-tabs mt-2 league-tab">
+        <li class="nav-item">
+          <span class="nav-link" :class="{active: mode === 'PLAYERS'}" @click="showPlayers">
+            플레이어
+            <span 
+                class="badge badge-pill" 
+                :class="{'badge-primary': mode === 'PLAYERS', 'badge-secondary': mode !== 'PLAYERS'}"
+                >
+              {{ players.length }}
+            </span>
           </span>
-        </span>
-      </li>
-      <li class="nav-item" @click="showRounds">
-        <span class="nav-link" :class="{active: mode === 'ROUNDS'}">
-          라운드
-          <span 
-              class="badge badge-pill" 
-              :class="{'badge-primary': mode === 'ROUNDS', 'badge-secondary': mode !== 'ROUNDS'}"
-              >
-            {{ rounds.length }}
+        </li>
+        <li class="nav-item" @click="showRounds">
+          <span class="nav-link" :class="{active: mode === 'ROUNDS'}">
+            라운드
+            <span 
+                class="badge badge-pill" 
+                :class="{'badge-primary': mode === 'ROUNDS', 'badge-secondary': mode !== 'ROUNDS'}"
+                >
+              {{ rounds.length }}
+            </span>
           </span>
-        </span>
-      </li>
-    </ul>
+        </li>
+      </ul>
 
-    <div class="list-group" v-if="mode === 'PLAYERS'">
-      <router-link
-         v-for="(player, index) in players"
-         :to="{name: 'player', params: {league_id: player.league, player_id: player.id}}"
-         :key="player.id"
-         class="list-group-item list-group-item-action border-left-0 border-right-0"
-         >
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <span class="badge badge-secondary badge-pill">{{ player.ranking }}</span>
-            <span :class="{'dropped': player.is_dropped, 'text-muted': player.is_dropped}">
-              {{ player.name }}
+      <div class="list-group" v-if="mode === 'PLAYERS'">
+        <router-link
+           v-for="(player, index) in players"
+           :to="{name: 'player', params: {league_id: player.league, player_id: player.id}}"
+           :key="player.id"
+           class="list-group-item list-group-item-action border-left-0 border-right-0"
+           >
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <span class="badge badge-secondary badge-pill">{{ player.ranking }}</span>
+              <span :class="{'dropped': player.is_dropped, 'text-muted': player.is_dropped}">
+                {{ player.name }}
+              </span>
+            </div>
+            <span class="text-muted">
+              <template v-if="player.wins > 0">{{ player.wins }}승</template>
+              <template v-if="player.draws > 0">{{ player.draws }}무</template>
+              <template v-if="player.loses > 0">{{ player.loses }}패</template>
             </span>
           </div>
-          <span class="text-muted">
-            <template v-if="player.wins > 0">{{ player.wins }}승</template>
-            <template v-if="player.draws > 0">{{ player.draws }}무</template>
-            <template v-if="player.loses > 0">{{ player.loses }}패</template>
-          </span>
-        </div>
-      </router-link>
+        </router-link>
 
-      <router-link
-         :to="{name: 'playerAdd', params: {league_id: league.id}}"
-         class="list-group-item list-group-item-action active border-left-0 border-right-0 d-flex justify-content-center"
-         :class="{'mt-1': players.length <= 0}"
-      >
-        플레이어 추가
-      </router-link>
-    </div>
+        <router-link
+           :to="{name: 'playerAdd', params: {league_id: league.id}}"
+           class="list-group-item list-group-item-action active border-left-0 border-right-0 d-flex justify-content-center"
+           :class="{'mt-1': players.length <= 0}"
+        >
+          플레이어 추가
+        </router-link>
+      </div>
 
-    <div class="list-group" v-if="mode === 'ROUNDS'">
-      <router-link
-         v-for="round in rounds"
-         :to="{name: 'round', params: {league_id: round.league, round_id: round.id}}"
-         :key="round.id"
-         class="list-group-item list-group-item-action border-left-0 border-right-0"
-      >
-        {{ round.no }} 라운드
-      </router-link>
+      <div class="list-group" v-if="mode === 'ROUNDS'">
+        <router-link
+           v-for="round in rounds"
+           :to="{name: 'round', params: {league_id: round.league, round_id: round.id}}"
+           :key="round.id"
+           class="list-group-item list-group-item-action border-left-0 border-right-0"
+        >
+          {{ round.no }} 라운드
+        </router-link>
 
-      <span
-         class="list-group-item list-group-item-action active border-left-0 border-right-0 d-flex justify-content-center"
-         :class="{'mt-1': rounds.length <= 0}"
-         @click="startNewRound"
-      >
-        새 라운드 시작
-      </span>
-    </div>
+        <span
+           class="list-group-item list-group-item-action active border-left-0 border-right-0 d-flex justify-content-center"
+           :class="{'mt-1': rounds.length <= 0}"
+           @click="startNewRound"
+        >
+          새 라운드 시작
+        </span>
+      </div>
+    </the-loading>
   </div>
 </template>
 
@@ -114,6 +116,7 @@ export default {
         this.league = res.data.league
         this.players = res.data.players
         this.rounds = res.data.rounds
+        this.$refs.loading.stop()
       })
   },
 
