@@ -13,7 +13,7 @@
 import ThePlayerForm from '@/components/ThePlayerForm'
 
 export default {
-  name: 'PlayerEditPage',
+  name: 'PlayerEditBasicPage',
 
   components: {
     'the-player-form': ThePlayerForm

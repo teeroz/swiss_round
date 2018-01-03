@@ -159,7 +159,8 @@ def get_player(league_id: int, player_id: int) -> dict:
     dict_this_player = m_this_player.to_dict()
 
     # family
-    family = [m_player for m_player in players if (m_player.id in m_this_player.family.values_list('id', flat=True))]
+    family_member_ids = m_this_player.family.values_list('id', flat=True)
+    family = [m_player for m_player in players if (m_player.id in family_member_ids)]
     dict_family = []
     for m_family_member in family:
         dict_family.append(m_family_member.to_dict())

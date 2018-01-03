@@ -6,15 +6,16 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="dropdown-menu" style="right: 0; left: auto;">
-          <button type="button" class="dropdown-item" @click="edit">수정</button>
+          <button type="button" class="dropdown-item" @click="editBasic">수정</button>
+          <div class="dropdown-divider"></div>
           <template v-if="player.is_dropped">
-            <div class="dropdown-divider"></div>
             <button type="button" class="dropdown-item" @click="undrop">참가</button>
           </template>
           <template v-else>
-            <div class="dropdown-divider"></div>
             <button type="button" class="dropdown-item" @click="drop">드랍</button>
           </template>
+          <div class="dropdown-divider"></div>
+          <button type="button" class="dropdown-item" @click="editFamily">가족설정</button>
         </div>
       </div>
     </the-navbar>
@@ -127,8 +128,13 @@ export default {
   },
 
   methods: {
-    edit: function () {
-      this.$router.push({ name: 'playerEdit', params: { league_id: this.$route.params.league_id, player_id: this.$route.params.player_id } })
+    editBasic: function () {
+      this.$router.push({ name: 'playerEditBasic', params: { league_id: this.$route.params.league_id, player_id: this.$route.params.player_id } })
+      return false
+    },
+
+    editFamily: function () {
+      this.$router.push({ name: 'playerEditFamily', params: { league_id: this.$route.params.league_id, player_id: this.$route.params.player_id } })
       return false
     },
 

@@ -7,7 +7,8 @@ import LeaguePage from '@/containers/LeaguePage'
 import LeagueCreatePage from '@/containers/LeagueCreatePage'
 import LeagueEditPage from '@/containers/LeagueEditPage'
 import PlayerAddPage from '@/containers/PlayerAddPage'
-import PlayerEditPage from '@/containers/PlayerEditPage'
+import PlayerEditBasicPage from '@/containers/PlayerEditBasicPage'
+import PlayerEditFamilyPage from '@/containers/PlayerEditFamilyPage'
 import PlayerPage from '@/containers/PlayerPage'
 import RoundPage from '@/containers/RoundPage'
 
@@ -48,9 +49,14 @@ export default new Router({
       component: PlayerPage
     },
     {
-      path: '/league/:league_id/player/:player_id/edit',
-      name: 'playerEdit',
-      component: PlayerEditPage
+      path: '/league/:league_id/player/:player_id/edit/basic',
+      name: 'playerEditBasic',
+      component: PlayerEditBasicPage
+    },
+    {
+      path: '/league/:league_id/player/:player_id/edit/family',
+      name: 'playerEditFamily',
+      component: PlayerEditFamilyPage
     },
     {
       path: '/league/:league_id/round/:round_id',

@@ -72,7 +72,7 @@ class Player(models.Model):
         self.ranking = 0
 
     def to_dict(self) -> dict:
-        to_dict = model_to_dict(self)
+        to_dict = model_to_dict(self, exclude="family")
         to_dict.update({
             'wins': self.wins,
             'draws': self.draws,
