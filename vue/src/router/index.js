@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import AjaxPlugin from '@/plugins/AjaxPlugin'
-import TheNavbar from '@/components/TheNavbar'
-import TheLoading from '@/components/TheLoading'
+import LoginPage from '@/containers/LoginPage'
 import LeaguesPage from '@/containers/LeaguesPage'
 import LeaguePage from '@/containers/LeaguePage'
 import LeagueCreatePage from '@/containers/LeagueCreatePage'
@@ -14,12 +12,14 @@ import PlayerPage from '@/containers/PlayerPage'
 import RoundPage from '@/containers/RoundPage'
 
 Vue.use(Router)
-Vue.use(AjaxPlugin)
-Vue.component('the-navbar', TheNavbar)
-Vue.component('the-loading', TheLoading)
 
 export default new Router({
   routes: [
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginPage
+    },
     {
       path: '/',
       name: 'leagues',
