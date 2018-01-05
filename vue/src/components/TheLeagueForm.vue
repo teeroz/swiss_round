@@ -3,7 +3,7 @@
     <form class="container">
       <div class="row form-group">
         <label for="exampleInputTitle">제목</label>
-        <input ref="title" type="text" class="form-control" aria-describeBy="TitleHelp" :placeholder="defaultTitle" maxlength="32" v-model="league.title" autofocus>
+        <input ref="title" type="text" class="form-control" aria-describeBy="TitleHelp" :placeholder="defaultTitle" maxlength="32" v-model="league.title" autofocus required>
         <small id="TitleHelp" class="form-text text-muted">입력하지 않을 경우 오늘 날짜로 입력됩니다.</small>
       </div>
       <div class="row form-group">
