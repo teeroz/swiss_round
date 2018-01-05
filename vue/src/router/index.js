@@ -64,6 +64,11 @@ export default new Router({
       path: '/league/:league_id/round/:round_id',
       name: 'round',
       component: RoundPage
+    },
+    {
+      path: '*',
+      name: 'home',
+      component: LeaguesPage
     }
   ]
 })
