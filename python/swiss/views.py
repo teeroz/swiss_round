@@ -120,7 +120,7 @@ def get_league(user: User, league_id: int) -> dict:
 def __get_players(m_league: League) -> List[dict]:
     players, matches = m_league.get_players_and_matches()  # type: Set[Player], List[Match]
     lib_league.calculate_matches_result(matches)
-    lib_league.calculate_rankings(players)
+    lib_league.calculate_rankings(players, matches)
 
     players = sorted(players, key=lambda p: p.ranking)  # type: List[Player]
 
@@ -193,7 +193,7 @@ def get_player(league_id: int, player_id: int) -> dict:
 
     players, matches = m_this_player.league.get_players_and_matches()  # type: Set[Player], List[Match]
     lib_league.calculate_matches_result(matches)
-    lib_league.calculate_rankings(players)
+    lib_league.calculate_rankings(players, matches)
 
     m_this_player = [m_player for m_player in players if m_player.id == player_id][0]
 

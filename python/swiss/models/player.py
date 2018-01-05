@@ -29,7 +29,11 @@ class Player(models.Model):
     matched_same = set()
     matched_lower = set()
 
-    opponents_total_wins = 0
+    # 상대의 승점을 합한 점수
+    buchholz = 0
+    # 승자승 결정을 위한 변수
+    all_kill = 0
+
     ranking = 0
 
     def __str__(self) -> str:
@@ -69,8 +73,14 @@ class Player(models.Model):
         self.matched_loses.add(opponent)
 
     def initialize_ranking(self) -> None:
-        self.opponents_total_wins = 0
+        self.buchholz = 0
         self.ranking = 0
+
+    def get_ranking_first(self) -> tuple:
+        return not self.is_ghost, self.wins * 2 + self.draws, self.buchholz
+
+    def get_ranking_second(self) -> tuple:
+        return self.max_strikes_count, self.max_strikes_start * -1
 
     def to_dict(self) -> dict:
         to_dict = model_to_dict(self, exclude="family")
@@ -80,7 +90,8 @@ class Player(models.Model):
             'loses': self.loses,
             'max_strikes_count': self.max_strikes_count,
             'max_strikes_start': self.max_strikes_start,
-            'opponents_total_wins': self.opponents_total_wins,
+            'buchholz': self.buchholz,
+            'all_kill': self.all_kill,
             'ranking': self.ranking
         })
 

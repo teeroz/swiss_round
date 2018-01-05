@@ -53,11 +53,14 @@
                 {{ player.name }}
               </span>
             </div>
-            <span class="text-muted">
+            <small class="text-muted">
               <template v-if="player.wins > 0">{{ player.wins }}승</template>
               <template v-if="player.draws > 0">{{ player.draws }}무</template>
               <template v-if="player.loses > 0">{{ player.loses }}패</template>
-            </span>
+              / {{ player.buchholz }} bh
+              <template v-if="player.all_kill > 0">/ 승자승</template>
+              / {{ player.max_strikes_count }}연승
+            </small>
           </div>
         </router-link>
 
@@ -150,6 +153,11 @@ export default {
     },
 
     startNewRound: function () {
+      if (this.players.length <= 1) {
+        alert('참가할 수 있는 플레이어가 없습니다.')
+        return
+      }
+
       this.$refs.loading.start()
 
       this.$axios.swiss.post(`league/${this.$route.params.league_id}/round`)

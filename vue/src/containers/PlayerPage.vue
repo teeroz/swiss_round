@@ -69,7 +69,7 @@
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <span>부크홀츠</span>
-              <span class="text-muted">{{ player.opponents_total_wins }}승</span>
+              <span class="text-muted">{{ player.buchholz }}</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
               <span>최대연승</span>
