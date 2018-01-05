@@ -54,8 +54,13 @@
         </span>
       </div>
 
-      <div class="text-center my-3" v-if="isComplete">
-        <button type="button" class="btn btn-primary" @click="nextRound">
+      <div class="text-center my-3">
+        <button 
+          type="button" 
+          class="btn" 
+          :class="{'btn-primary': isComplete, 'btn-secondary': !isComplete}"
+          @click="nextRound"
+          :disabled="!isComplete">
           <i class="fas fa-arrow-right"></i> <strong><span>다음 라운드 시작하기</span></strong>
         </button>
       </div>

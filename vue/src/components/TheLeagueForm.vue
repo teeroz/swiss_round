@@ -3,7 +3,7 @@
     <form class="container">
       <div class="row form-group">
         <label for="exampleInputTitle">제목</label>
-        <input ref="title" type="text" class="form-control" aria-describeBy="TitleHelp" :placeholder="defaultTitle" maxlength="32" v-model="league.title" autofocus required>
+        <input ref="title" type="text" class="form-control" aria-describeBy="TitleHelp" :placeholder="defaultTitle" maxlength="32" v-model="league.title" autofocus required @keyup.enter="submit">
         <small id="TitleHelp" class="form-text text-muted">입력하지 않을 경우 오늘 날짜로 입력됩니다.</small>
       </div>
       <div class="row form-group">
@@ -27,7 +27,7 @@
       </div>
       <div class="row justify-content-end">
         <button type="button" class="btn btn-secondary col-2 mx-2" @click="cancel">취소</button>
-        <button type="submit" class="btn btn-primary col-2" @click="submit">확인</button>
+        <button type="button" class="btn btn-primary col-2" @click="submit">확인</button>
       </div>
     </form>
   </div>
