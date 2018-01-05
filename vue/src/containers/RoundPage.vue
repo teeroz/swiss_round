@@ -54,7 +54,7 @@
         </span>
       </div>
 
-      <div class="text-center mt-3" v-if="isComplete">
+      <div class="text-center my-3" v-if="isComplete">
         <button type="button" class="btn btn-primary" @click="nextRound">
           <i class="fas fa-arrow-right"></i> <strong><span>다음 라운드 시작하기</span></strong>
         </button>
@@ -116,6 +116,9 @@ export default {
     },
 
     updateScore: function (match, score1, score2) {
+      match.score1 = score1
+      match.score2 = score2
+
       this.$axios.swiss.put(`league/${this.$route.params.league_id}/round/${this.$route.params.round_id}/match/${match.id}`,
         {score1: score1, score2: score2})
         .then(res => {
