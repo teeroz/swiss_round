@@ -1,5 +1,6 @@
 <script>
 import axios from 'axios'
+import router from '../router/index.js'
 
 export default {
   install: function (Vue, options) {
@@ -8,10 +9,17 @@ export default {
         _request: function (method, path, params) {
           return new Promise((resolve, reject) => {
             method(`http://swiss.teeroz.net:8080/swiss/api/${path}`, params)
-            // method(`http://localhost:8000/swiss/api/${path}`, params)
             .then(res => resolve(res))
             .catch(e => {
               if (e.response) {
+                if (e.response.status === 403) {
+                  router.push({ name: 'login' })
+                  return
+                } else if (e.response.status === 404) {
+                  router.push({ name: 'login' })
+                  return
+                }
+
                 console.error(e.response.data)
               }
               alert(e.toString())
@@ -33,6 +41,25 @@ export default {
 
         delete: function (path, params) {
           return this._request(axios.delete, path, params)
+        }
+      },
+
+      facebook: {
+        _request: function (method, path, params) {
+          return new Promise((resolve, reject) => {
+            method(`https://graph.facebook.com/v2.11/${path}`, params)
+            .then(res => resolve(res))
+            .catch(e => {
+              if (e.response) {
+                console.error(e.response.data)
+              }
+              alert(e.toString())
+            })
+          })
+        },
+
+        get: function (path, params) {
+          return this._request(axios.get, path, params)
         }
       }
     }

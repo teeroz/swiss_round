@@ -3,13 +3,16 @@
     <form class="container">
       <div class="row form-group">
         <label for="exampleInputTitle">제목</label>
-        <input type="text" class="form-control" aria-describeBy="TitleHelp" :placeholder="defaultTitle" maxlength="32" v-model="league.title" autofocus>
+        <input ref="title" type="text" class="form-control" aria-describeBy="TitleHelp" :placeholder="defaultTitle" maxlength="32" v-model="league.title" autofocus>
         <small id="TitleHelp" class="form-text text-muted">입력하지 않을 경우 오늘 날짜로 입력됩니다.</small>
       </div>
       <div class="row form-group">
         <label for="exampleInputTie">순위</label>
         <select class="form-control mb-1" disabled>
-          <option>포인트 (승:3, 무:1)</option>
+          <option>승수</option>
+        </select>
+        <select class="form-control my-1" disabled>
+          <option>부크홀츠</option>
         </select>
         <select class="form-control my-1" disabled>
           <option>승자승원칙</option>
@@ -51,6 +54,10 @@ export default {
 
   data: function () {
     return { }
+  },
+
+  mounted: function () {
+    this.$refs.title.focus()
   },
 
   methods: {

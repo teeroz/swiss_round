@@ -116,5 +116,6 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_WHITELIST = (
     'localhost:8080',
+    'swiss.teeroz.net:8000',
     'swiss.teeroz.net'
 )

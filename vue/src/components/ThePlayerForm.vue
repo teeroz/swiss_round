@@ -36,6 +36,10 @@ export default {
     return { }
   },
 
+  mounted: function () {
+    this.$refs.name.focus()
+  },
+
   methods: {
     cancel: function () {
       this.$router.go(-1)

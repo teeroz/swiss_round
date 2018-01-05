@@ -68,7 +68,7 @@
               </span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-              <span>상대승수합</span>
+              <span>부크홀츠</span>
               <span class="text-muted">{{ player.opponents_total_wins }}승</span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">

@@ -4,6 +4,12 @@ from swiss.models.league import League
 from swiss.models.match import Match
 from swiss.models.player import Player
 from swiss.models.round import Round
+from swiss.models.user import User
+
+
+@admin.register(User)
+class UserAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(League)

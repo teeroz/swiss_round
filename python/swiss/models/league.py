@@ -2,8 +2,11 @@ from typing import List
 
 from django.db import models
 
+from swiss.models.user import User
+
 
 class League(models.Model):
+    user = models.ForeignKey(User, related_name='leagues', on_delete=models.CASCADE)
     title = models.CharField(max_length=32)
     create_dt = models.DateTimeField(auto_now_add=True)
     modify_dt = models.DateTimeField(auto_now=True)

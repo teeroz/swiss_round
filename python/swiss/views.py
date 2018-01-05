@@ -1,68 +1,116 @@
 import json
+import urllib.request
+import urllib.parse
 from typing import List, Set
 
+import os
 from django.core.exceptions import ObjectDoesNotExist
 from django.forms import model_to_dict
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponseForbidden
 from django.http import HttpResponse
 from django.http import HttpResponseBadRequest
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 
-from swiss.core import lib_league
+from swiss.core import lib_league, lib_user
 from swiss.core import lib_player
 from swiss.core import lib_round
 from swiss.models.league import League
 from swiss.models.match import Match
 from swiss.models.player import Player
 from swiss.models.round import Round
+from swiss.models.user import User
+
+
+@csrf_exempt
+def v_auth_facebook(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        return JsonResponse(authenticate_facebook(data))
+
+    return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
+
+
+def authenticate_facebook(data: dict) -> dict:
+    params = urllib.parse.urlencode({
+        'client_id': data['clientId'],
+        'redirect_uri': data['redirectUri'],
+        'client_secret': os.environ['SWISS_FACEBOOK_CLIENT_SECRET'],
+        'code': data['code']
+    })
+    url = 'https://graph.facebook.com/v2.11/oauth/access_token?%s' % params
+    with urllib.request.urlopen(url) as res:
+        token_info = json.loads(res.read().decode('utf-8'))
+
+    params = urllib.parse.urlencode({
+        'access_token': token_info['access_token']
+    })
+    url = 'https://graph.facebook.com/v2.11/me?%s' % params
+    with urllib.request.urlopen(url) as res:
+        profile = json.loads(res.read().decode('utf-8'))
+
+    lib_user.register('facebook', profile['id'], token_info['access_token'], token_info['expires_in'])
+
+    token_info.update(profile)
+    return token_info
 
 
 @csrf_exempt
 def v_league(request: HttpRequest) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        return JsonResponse(create_league(data))
+        return JsonResponse(create_league(user, data))
 
     return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
 
 
-def create_league(data: dict) -> dict:
-    m_league = lib_league.create(data['title'])
+def create_league(user: User, data: dict) -> dict:
+    m_league = lib_league.create(user, data['title'])
 
     return model_to_dict(m_league)
 
 
-@csrf_exempt
 def v_leagues(request: HttpRequest) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'GET':
-        return JsonResponse(get_leagues())
+        return JsonResponse(get_leagues(user))
 
     return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
 
 
-def get_leagues() -> dict:
-    leagues = League.objects.order_by('-pk')
+def get_leagues(user: User) -> dict:
+    leagues = user.leagues.order_by('-pk')
     result = [model_to_dict(m_league) for m_league in leagues]
     return {'leagues': result}
 
 
 @csrf_exempt
 def v_a_league(request: HttpRequest, league_id: int) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'GET':
-        return JsonResponse(get_league(league_id))
+        return JsonResponse(get_league(user, league_id))
     elif request.method == 'PUT':
         data = json.loads(request.body.decode('utf-8'))
-        return JsonResponse(edit_league(league_id, data))
+        return JsonResponse(edit_league(user, league_id, data))
     elif request.method == 'DELETE':
-        return JsonResponse(remove_league(league_id))
+        return JsonResponse(remove_league(user, league_id))
 
     return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
 
 
-def get_league(league_id: int) -> dict:
-    m_league = get_object_or_404(League, pk=league_id)
+def get_league(user: User, league_id: int) -> dict:
+    m_league = get_object_or_404(League, pk=league_id, user_id=user.id)
 
     return {'league': model_to_dict(m_league),
             'players': __get_players(m_league),
@@ -84,16 +132,16 @@ def __get_rounds(m_league: League) -> List[dict]:
     return [model_to_dict(m_round) for m_round in rounds]
 
 
-def edit_league(league_id: int, data: dict) -> dict:
-    m_league = get_object_or_404(League, pk=league_id)
+def edit_league(user: User, league_id: int, data: dict) -> dict:
+    m_league = get_object_or_404(League, pk=league_id, user_id=user.id)
     m_league.title = data['title']
     m_league.save()
 
     return model_to_dict(m_league)
 
 
-def remove_league(league_id: int) -> dict:
-    m_league = get_object_or_404(League, pk=league_id)
+def remove_league(user: User, league_id: int) -> dict:
+    m_league = get_object_or_404(League, pk=league_id, user_id=user.id)
     m_league.delete()
 
     return model_to_dict(m_league)
@@ -101,15 +149,19 @@ def remove_league(league_id: int) -> dict:
 
 @csrf_exempt
 def v_player(request: HttpRequest, league_id: int) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        return JsonResponse(add_player(league_id, data))
+        return JsonResponse(add_player(user, league_id, data))
 
     return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
 
 
-def add_player(league_id: int, data: dict) -> dict:
-    m_league = get_object_or_404(League, pk=league_id)
+def add_player(user: User, league_id: int, data: dict) -> dict:
+    m_league = get_object_or_404(League, pk=league_id, user_id=user.id)
 
     # TODO 같은 이름의 플레이어가 있는지 체크하기
 
@@ -123,6 +175,10 @@ def add_player(league_id: int, data: dict) -> dict:
 
 @csrf_exempt
 def v_a_player(request: HttpRequest, league_id: int, player_id: int) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'GET':
         return JsonResponse(get_player(league_id, player_id))
     elif request.method == 'PUT':
@@ -210,14 +266,18 @@ def edit_player(league_id: int, player_id: int, data: dict) -> dict:
 
 @csrf_exempt
 def v_round(request: HttpRequest, league_id: int) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'POST':
-        return JsonResponse(start_new_round(league_id))
+        return JsonResponse(start_new_round(user, league_id))
 
     return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
 
 
-def start_new_round(league_id: int) -> dict:
-    m_league = get_object_or_404(League, pk=league_id)
+def start_new_round(user: User, league_id: int) -> dict:
+    m_league = get_object_or_404(League, pk=league_id, user_id=user.id)
     m_round = lib_round.start_new_round(m_league)
 
     if m_round is None:
@@ -228,6 +288,10 @@ def start_new_round(league_id: int) -> dict:
 
 @csrf_exempt
 def v_a_round(request: HttpRequest, league_id: int, round_id: int) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'GET':
         return JsonResponse(get_round(league_id, round_id))
     elif request.method == 'DELETE':
@@ -266,6 +330,10 @@ def remove_round(league_id: int, round_id: int) -> dict:
 
 @csrf_exempt
 def v_a_match(request: HttpRequest, league_id: int, round_id: int, match_id: int) -> HttpResponse:
+    user = lib_user.get_user(request)
+    if user is None:
+        return HttpResponseForbidden('Invalid authorization')
+
     if request.method == 'PUT':
         data = json.loads(request.body.decode('utf-8'))
         return JsonResponse(update_score(league_id, round_id, match_id, data))

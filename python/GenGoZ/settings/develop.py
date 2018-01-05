@@ -11,7 +11,7 @@ SECRET_KEY = '3&_h195uifc5(&b9h*i5=(9%@8ngu-$go)qpo&3@@$=ur5#m&i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['swiss.teeroz.net']
 
 """
 LOGGING = {

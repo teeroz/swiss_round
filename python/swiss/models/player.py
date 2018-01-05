@@ -10,10 +10,10 @@ class Player(models.Model):
     memo = models.CharField(max_length=64, default='')
     is_ghost = models.BooleanField(default=False)
     is_dropped = models.BooleanField(default=False)
-    create_dt = models.DateTimeField(auto_now_add=True)
-    modify_dt = models.DateTimeField(auto_now=True)
     is_family = models.BooleanField(default=False)
     family = models.ManyToManyField("self", symmetrical=True, blank=True)
+    create_dt = models.DateTimeField(auto_now_add=True)
+    modify_dt = models.DateTimeField(auto_now=True)
 
     wins = 0
     draws = 0

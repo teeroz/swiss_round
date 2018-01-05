@@ -63,10 +63,10 @@
 
         <router-link
            :to="{name: 'playerAdd', params: {league_id: league.id}}"
-           class="list-group-item list-group-item-action active border-left-0 border-right-0 d-flex justify-content-center"
+           class="list-group-item list-group-item-action border-left-0 border-right-0 text-center text-primary"
            :class="{'mt-1': players.length <= 0}"
-        >
-          플레이어 추가
+           >
+          <i class="fas fa-user-plus"></i> <strong><span>플레이어 추가하기</span></strong>
         </router-link>
       </div>
 
@@ -76,16 +76,16 @@
            :to="{name: 'round', params: {league_id: round.league, round_id: round.id}}"
            :key="round.id"
            class="list-group-item list-group-item-action border-left-0 border-right-0"
-        >
+           >
           {{ round.no }} 라운드
         </router-link>
 
         <span
-           class="list-group-item list-group-item-action active border-left-0 border-right-0 d-flex justify-content-center"
+           class="list-group-item list-group-item-action border-left-0 border-right-0 text-center text-primary"
            :class="{'mt-1': rounds.length <= 0}"
            @click="startNewRound"
-        >
-          새 라운드 시작
+           >
+          <i class="fas fa-trophy"></i> <strong><span>새 라운드 시작하기</span></strong>
         </span>
       </div>
     </the-loading>

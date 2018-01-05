@@ -53,6 +53,12 @@
           </div>
         </span>
       </div>
+
+      <div class="text-center mt-3" v-if="isComplete">
+        <button type="button" class="btn btn-primary" @click="nextRound">
+          <i class="fas fa-arrow-right"></i> <strong><span>다음 라운드 시작하기</span></strong>
+        </button>
+      </div>
     </the-loading>
   </div>
 </template>
@@ -64,7 +70,8 @@ export default {
   data: function () {
     return {
       round: { no: '' },
-      matches: []
+      matches: [],
+      isComplete: false
     }
   },
 
@@ -73,6 +80,7 @@ export default {
       .then(res => {
         this.round = res.data.round
         this.matches = res.data.matches
+        this.checkIsComplete()
         this.$refs.loading.stop()
       })
   },
@@ -92,10 +100,28 @@ export default {
         .then(this.goBack)
     },
 
+    nextRound: function () {
+      this.$refs.loading.start()
+
+      this.$axios.swiss.post(`league/${this.$route.params.league_id}/round`)
+        .then(res => {
+          if (!res.data['id']) {
+            alert('더 이상 라운드를 만들 수 없습니다.')
+            this.$refs.loading.stop()
+            return
+          }
+
+          this.$router.push({ name: 'round', params: { league_id: this.$route.params.league_id, round_id: res.data.id } })
+        })
+    },
+
     updateScore: function (match, score1, score2) {
       this.$axios.swiss.put(`league/${this.$route.params.league_id}/round/${this.$route.params.round_id}/match/${match.id}`,
         {score1: score1, score2: score2})
-        .then(res => { this.matches = res.data.matches })
+        .then(res => {
+          this.matches = res.data.matches
+          this.checkIsComplete()
+        })
     },
 
     goPlayerPage: function (player) {
@@ -104,6 +130,18 @@ export default {
       }
 
       this.$router.push({ name: 'player', params: { league_id: this.$route.params.league_id, player_id: player.id } })
+    },
+
+    checkIsComplete: function () {
+      let isComplete = true
+      for (const key in this.matches) {
+        const match = this.matches[key]
+        if (match.score1 === match.score2) {
+          isComplete = false
+          break
+        }
+      }
+      this.isComplete = isComplete
     }
   }
 }

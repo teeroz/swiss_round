@@ -3,10 +3,12 @@ from typing import List, Set
 from swiss.models.league import League
 from swiss.models.player import Player
 from swiss.models.match import Match
+from swiss.models.user import User
 
 
-def create(title: str) -> League:
+def create(user: User, title: str) -> League:
     league = League()
+    league.user = user
     league.title = title
     league.save()
 

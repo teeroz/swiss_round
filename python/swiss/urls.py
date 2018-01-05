@@ -3,6 +3,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('api/auth/facebook', views.v_auth_facebook, name='auth_facebook'),
     path('api/leagues', views.v_leagues, name='leagues'),
     path('api/league', views.v_league, name='league'),
     path('api/league/<int:league_id>', views.v_a_league, name='a_league'),
