@@ -11,6 +11,8 @@ class League(models.Model):
     create_dt = models.DateTimeField(auto_now_add=True)
     modify_dt = models.DateTimeField(auto_now=True)
 
+    win_score = 3
+
     def __str__(self) -> str:
         return str(self.title)
 
