@@ -26,14 +26,14 @@ export default new Router({
       component: LeaguesPage
     },
     {
-      path: '/league/:league_id',
-      name: 'league',
-      component: LeaguePage
-    },
-    {
       path: '/league/create',
       name: 'leagueCreate',
       component: LeagueCreatePage
+    },
+    {
+      path: '/league/:league_id',
+      name: 'league',
+      component: LeaguePage
     },
     {
       path: '/league/:league_id/edit',

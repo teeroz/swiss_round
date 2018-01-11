@@ -1,6 +1,6 @@
 <template>
   <div class="container my-4">
-    <form class="container">
+    <form class="container" @submit.prevent="submit">
       <div class="row form-group">
         <label for="exampleInputName">이름</label>
         <input ref="name" type="text" class="form-control" placeholder="홍길동" maxlength="8" v-model="player.name" autofocus required>
@@ -11,7 +11,7 @@
       </div>
       <div class="row justify-content-end">
         <button type="button" class="btn btn-secondary col-2 mx-2" @click="cancel">취소</button>
-        <button type="submit" class="btn btn-primary col-2" @click="submit">확인</button>
+        <button type="submit" class="btn btn-primary col-2">확인</button>
       </div>
     </form>
   </div>
