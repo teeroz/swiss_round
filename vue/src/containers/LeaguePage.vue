@@ -53,7 +53,7 @@
                 {{ player.name }}
               </span>
             </div>
-            <small class="text-muted">
+            <small class="text-muted" v-if="player.wins + player.draws + player.loses > 0">
               <template v-if="player.wins > 0">{{ player.wins }}승</template>
               <template v-if="player.draws > 0">{{ player.draws }}무</template>
               <template v-if="player.loses > 0">{{ player.loses }}패</template>
