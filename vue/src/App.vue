@@ -30,6 +30,17 @@ Vue.use(VueAuthenticate, {
     facebook: {
       clientId: '1713079558713926',
       redirectUri: 'http://swiss.teeroz.net' + (process.env.NODE_ENV === 'development' ? ':8000' : '') + '/' // Your client app URL
+    },
+    github: {
+      name: 'github',
+      url: '/auth/kakao',
+      authorizationEndpoint: 'https://kauth.kakao.com/oauth/authorize',
+      clientId: '672b24cc4f5d7c23184d378fd6fd3cca',
+      redirectUri: 'http://swiss.teeroz.net' + (process.env.NODE_ENV === 'development' ? ':8000' : '') + '/', // Your client app URL
+      scope: null,
+      scopeDelimiter: null,
+      oauthType: '2.0',
+      popupOptions: { width: 580, height: 400 }
     }
   }
 })

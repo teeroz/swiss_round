@@ -9,6 +9,7 @@
 npm install
 
 # serve with hot reload at localhost:8080
+# add '127.0.0.1 swiss.teeroz.net' in /etc/hosts before running the server
 npm run dev
 
 # build for production with minification

@@ -57,6 +57,37 @@ def authenticate_facebook(data: dict) -> dict:
 
 
 @csrf_exempt
+def v_auth_kakao(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        return JsonResponse(authenticate_kakao(data))
+
+    return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
+
+
+def authenticate_kakao(data: dict) -> dict:
+    params = urllib.parse.urlencode({
+        'grant_type': 'authorization_code',
+        'client_id': data['clientId'],
+        'redirect_uri': data['redirectUri'],
+        'code': data['code']
+    })
+    url = 'https://kauth.kakao.com/oauth/token?%s' % params
+    with urllib.request.urlopen(url) as res:
+        token_info = json.loads(res.read().decode('utf-8'))
+
+    url = 'https://kapi.kakao.com/v2/user/me'
+    req = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + token_info['access_token']})
+    with urllib.request.urlopen(req) as res:
+        profile = json.loads(res.read().decode('utf-8'))
+
+    lib_user.register('kakao', profile['id'], token_info['access_token'], token_info['expires_in'])
+
+    token_info.update(profile)
+    return token_info
+
+
+@csrf_exempt
 def v_league(request: HttpRequest) -> HttpResponse:
     user = lib_user.get_user(request)
     if user is None:
