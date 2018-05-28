@@ -40,7 +40,7 @@ Vue.use(VueAuthenticate, {
       scope: null,
       scopeDelimiter: null,
       oauthType: '2.0',
-      popupOptions: { width: 580, height: 400 }
+      popupOptions: { width: 360, height: 450 }
     }
   }
 })
