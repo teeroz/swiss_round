@@ -76,10 +76,11 @@ def authenticate_kakao(data: dict) -> dict:
     with urllib.request.urlopen(url) as res:
         token_info = json.loads(res.read().decode('utf-8'))
 
-    url = 'https://kapi.kakao.com/v2/user/me'
+    url = 'https://kapi.kakao.com/v2/user/me?propertyKeys=["nickname"]'
     req = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + token_info['access_token']})
     with urllib.request.urlopen(req) as res:
         profile = json.loads(res.read().decode('utf-8'))
+        profile['name'] = profile['properties']['nickname']
 
     lib_user.register('kakao', profile['id'], token_info['access_token'], token_info['expires_in'])
 
