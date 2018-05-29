@@ -118,7 +118,10 @@ def v_leagues(request: HttpRequest) -> HttpResponse:
 
 
 def get_leagues(user: User) -> dict:
-    leagues = user.leagues.order_by('-pk')
+    if user.is_admin():
+        leagues = League.objects.order_by('-pk')
+    else:
+        leagues = user.leagues.order_by('-pk')
     result = [model_to_dict(m_league) for m_league in leagues]
     return {'leagues': result}
 
@@ -141,7 +144,10 @@ def v_a_league(request: HttpRequest, league_id: int) -> HttpResponse:
 
 
 def get_league(user: User, league_id: int) -> dict:
-    m_league = get_object_or_404(League, pk=league_id, user_id=user.id)
+    if user.is_admin():
+        m_league = get_object_or_404(League, pk=league_id)
+    else:
+        m_league = get_object_or_404(League, pk=league_id, user_id=user.id)
 
     return {'league': model_to_dict(m_league),
             'players': __get_players(m_league),

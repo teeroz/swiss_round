@@ -7,3 +7,6 @@ class User(models.Model):
     expire_dt = models.DateTimeField()
     create_dt = models.DateTimeField(auto_now_add=True)
     modify_dt = models.DateTimeField(auto_now=True)
+
+    def is_admin(self) -> bool:
+        return self.social_id == 'kakao:784560088'
