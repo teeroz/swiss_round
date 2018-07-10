@@ -1,4 +1,11 @@
 Welcome to GenGoZ
 
+$ brew install pyenv
+$ pyenv install 3.7.0
+$ pip install -r requirements.txt
+
+# Add the below line to .zshenv
+export DJANGO_SETTINGS_MODULE=GenGoZ.settings.develop
+
 # development
 ./manage.py runserver 8080
