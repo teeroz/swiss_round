@@ -14,17 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth.views import login, password_change, logout, password_change_done
+from django.contrib.auth.views import LoginView, PasswordChangeView, LogoutView, PasswordChangeDoneView
 from django.urls import re_path, include
 
 urlpatterns = [
     re_path(r'^exams/', include('exams.urls')),
     re_path(r'^swiss/', include('swiss.urls')),
     re_path(r'^admin/', admin.site.urls),
-    re_path(r'^login$', login, {'template_name': 'admin/login.html'}, name='login'),
-    re_path(r'^logout$', logout, {'next_page': '/exams/1/w'}, name='logout'),
-    re_path(r'^password_change$', password_change,
-            {'template_name': 'registration/password_change_form.html'}, name='password_change'),
-    re_path(r'^password_change_done$', password_change_done,
-            {'template_name': 'registration/password_change_done.html'}, name='password_change_done'),
+    re_path(r'^login$', LoginView.as_view(template_name='admin/login.html'), name='login'),
+    re_path(r'^logout$', LogoutView.as_view(next_page='/exams/1/w'), name='logout'),
+    re_path(r'^password_change$', PasswordChangeView.as_view(template_name='registration/password_change_form.html'), name='password_change'),
+    re_path(r'^password_change_done$', PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'), name='password_change_done'),
 ]
