@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
-    "fsevents": "^1.2.4",
+    "fsevents": "^1.2.7",
     "npm": "^6.1.0",
     "socks": "^2.2.1",
     "vue": "^2.5.13",

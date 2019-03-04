@@ -28,4 +28,12 @@ npm run e2e
 npm test
 ```
 
+``` docker
+# build
+docker build -t vue .
+
+# run
+docker run -d --restart unless-stopped -p 80:80 --name vue-app-1 vue
+```
+
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
