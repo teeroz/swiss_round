@@ -22,6 +22,11 @@
           <h5 class="card-title">변경사항</h5>
           <p class="card-text mb-4">
             <small>
+              <strong>v1.4.0</strong>&nbsp;&nbsp;<span class="text-muted">at 2019.05.18</span><br />
+              - 일반 아이디로 로그인하는 기능을 추가하였습니다. 이 기능을 이용하면 여러명이 로그인하여 함께 사용할 수 있습니다. 단, 비밀번호는 없으니 주의해주세요.<br />
+              - 플레이어 순위 프린트 기능과 라운드 표 프린트 기능이 추가되었습니다. 각 화면에서 우측 상단의 메뉴를 열어보세요.<br />
+            </small>
+            <small>
               <strong>v1.3.0</strong>&nbsp;&nbsp;<span class="text-muted">at 2018.05.28</span><br />
               - 카카오 계정으로 로그인 하기 추가<br />
             </small>
