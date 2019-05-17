@@ -15,6 +15,8 @@ import TheLoading from '@/components/TheLoading'
 import VueAxios from 'vue-axios'
 import VueAuthenticate from 'vue-authenticate'
 import axios from 'axios'
+import VueHtmlToPaper from 'vue-html-to-paper';
+import VueLodash from 'vue-lodash';
 
 Vue.use(AjaxPlugin)
 
@@ -44,6 +46,20 @@ Vue.use(VueAuthenticate, {
     }
   }
 })
+
+Vue.use(VueHtmlToPaper, {
+  name: '_blank',
+  specs: [
+    'fullscreen=yes',
+    'titlebar=yes',
+    'scrollbars=yes'
+  ],
+  styles: [
+    'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css',
+  ]
+});
+
+Vue.use(VueLodash);
 
 export default {
   name: 'app'

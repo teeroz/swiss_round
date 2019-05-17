@@ -7786,6 +7786,11 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.3.tgz#2756f46cb3258054c5f4723de8ae7e87302a1ccf"
   integrity sha512-KmvZVtmM26BQOMK1rwUZsrqxEGeKiYSZGA7SNWE6uExx8UX/cj9hq2MRV/wWC3Cq6AoeDGk57rL9YMFRel/q+g==
 
+vue-html-to-paper@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/vue-html-to-paper/-/vue-html-to-paper-1.0.3.tgz#e3ca82facd6298b29e47e5f36e3d9821b5c69730"
+  integrity sha512-Cd77mfAv09eyDZrKdw/l2xn438s0AZIXBISGRM97PMHmda6zewExLdD/LhP6SfLTDt5T6qrQXrzC25bnLw8UoQ==
+
 vue-loader@^15.7.0:
   version "15.7.0"
   resolved "https://registry.yarnpkg.com/vue-loader/-/vue-loader-15.7.0.tgz#27275aa5a3ef4958c5379c006dd1436ad04b25b3"
@@ -7796,6 +7801,13 @@ vue-loader@^15.7.0:
     loader-utils "^1.1.0"
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
+
+vue-lodash@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/vue-lodash/-/vue-lodash-2.0.2.tgz#08019cc1969ecdf3346017865f86cf4dade0618c"
+  integrity sha512-qC0A6mkF5yUt9Wy2zMa8qGpt+/JTjtlJ+ch1UKfr3eWscTrlK0FlD5GhfPaU/21ZOlZcRXsFriqf/ddchYA6CQ==
+  dependencies:
+    lodash "^4.17.11"
 
 vue-router@^3.0.6:
   version "3.0.6"

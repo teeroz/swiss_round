@@ -7,7 +7,6 @@
         </button>
         <div class="dropdown-menu" style="right: 0; left: auto;">
           <button type="button" class="dropdown-item" @click="printRound">라운드별 프린트</button>
-          <button type="button" class="dropdown-item" @click="printPlayer">선수별 프린트</button>
           <div class="dropdown-divider"></div>
           <button type="button" class="dropdown-item" @click="remove">삭제</button>
         </div>
@@ -37,7 +36,7 @@
                 <template v-else>무</template>
               </button>
             </div>
-            <div><small>vs</small></div>
+            <div><small>#{{ match.no }}</small></div>
             <div class="col-6 text-left">
               <button 
                 type="button" 
@@ -68,6 +67,40 @@
         </button>
       </div>
     </the-loading>
+
+    <div style="display: none;">
+      <div id="printAreaGroupByTable">
+        <div class="row justify-content-center" style="margin: 30px;">
+          <h1 class="col-12 text-center display-4" style="margin-bottom: 30px;">{{ round.no }} 라운드</h1>
+
+          <table class="table table-bordered col-12 text-center" style="font-size: 24px;">
+            <thead>
+                <th scope="col">#</th>
+                <th scope="col">Player 1</th>
+                <th scope="col">Player 2</th>
+                <th scope="col">#</th>
+                <th scope="col">Player 1</th>
+                <th scope="col">Player 2</th>
+            </thead>
+            <tbody>
+              <template v-for="matches in matchesByTable">
+                <tr>
+                  <template v-for="match in matches">
+                    <td>{{ match.no }}</td>
+                    <td>{{ match.player1.name }}</td>
+                    <td>{{ match.player2.name }}</td>
+                  </template>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="printAreaGroupByPlayer">
+        PRINT BY PLAYER
+      </div>
+    </div>
   </div>
 </template>
 
@@ -79,6 +112,7 @@ export default {
     return {
       round: { no: '' },
       matches: [],
+      matchesByTable: [],
       isComplete: false
     }
   },
@@ -86,10 +120,30 @@ export default {
   created: function () {
     this.$axios.swiss.get(`league/${this.$route.params.league_id}/round/${this.$route.params.round_id}`)
       .then(res => {
+        // matches 에 no 추가 
+        const matches = res.data.matches;
+        let no = 1;
+        for (const match of matches) {
+          match.no = no;
+          no += 1;
+        }
+
         this.round = res.data.round
         this.matches = res.data.matches
         this.checkIsComplete()
         this.$refs.loading.stop()
+
+        // 테이블별로 2개씩 청크로 만들어서 저장한다
+        const matches1 = matches.slice(0, parseInt((matches.length + 1) / 2, 10));
+        const matches2 = matches.slice(parseInt((matches.length + 1) / 2, 10));
+        const matchesByTable = [];
+        for (const k in matches1) {
+          matchesByTable.push(matches1[k]);
+          if (matches2.length > k) {
+            matchesByTable.push(matches2[k]);
+          }
+        }
+        this.matchesByTable = this._.chunk(matchesByTable, 2);
       })
   },
 
@@ -99,6 +153,7 @@ export default {
     },
 
     printRound: function () {
+      this.$htmlToPaper('printAreaGroupByTable');
     },
 
     printPlayer: function () {
