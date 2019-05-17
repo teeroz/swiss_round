@@ -6,6 +6,8 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="dropdown-menu" style="right: 0; left: auto;">
+          <button type="button" class="dropdown-item" @click="print">프린트</button>
+          <div class="dropdown-divider"></div>
           <button type="button" class="dropdown-item" @click="edit">수정</button>
           <div class="dropdown-divider"></div>
           <button type="button" class="dropdown-item" @click="remove">삭제</button>
@@ -92,6 +94,41 @@
         </span>
       </div>
     </the-loading>
+
+    <div style="display: none;">
+      <div id="printArea">
+        <div class="row justify-content-center" style="margin: 30px;">
+          <h1 class="col-12 text-center display-4" style="margin-bottom: 30px;">플레이어 순위</h1>
+
+          <table class="table table-bordered col-12 text-center" style="font-size: 24px;">
+            <thead>
+                <th scope="col">순위</th>
+                <th scope="col">Player</th>
+                <th scope="col">승패</th>
+                <th scope="col">부크홀츠</th>
+                <th scope="col">최대연승</th>
+                <th scope="col">기타</th>
+            </thead>
+            <tbody>
+              <template v-for="player in players">
+                <tr>
+                  <td>{{ player.ranking }} 위</td>
+                  <td>{{ player.name }}</td>
+                  <td>
+                    <template v-if="player.wins > 0">{{ player.wins }}승</template>
+                    <template v-if="player.draws > 0">&nbsp;{{ player.draws }}무</template>
+                    <template v-if="player.loses > 0">&nbsp;{{ player.loses }}패</template>
+                  </td>
+                  <td>{{ player.buchholz }} 점</td>
+                  <td>{{ player.max_strikes_count }} 연승</td>
+                  <td><template v-if="player.all_kill > 0">승자승</template></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -126,6 +163,10 @@ export default {
   methods: {
     goBack: function () {
       this.$router.push({ name: 'leagues' })
+    },
+
+    print: function () {
+      this.$htmlToPaper('printArea');
     },
 
     edit: function () {
