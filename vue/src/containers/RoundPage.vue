@@ -6,6 +6,9 @@
           <i class="fas fa-bars"></i>
         </button>
         <div class="dropdown-menu" style="right: 0; left: auto;">
+          <button type="button" class="dropdown-item" @click="printRound">라운드별 프린트</button>
+          <button type="button" class="dropdown-item" @click="printPlayer">선수별 프린트</button>
+          <div class="dropdown-divider"></div>
           <button type="button" class="dropdown-item" @click="remove">삭제</button>
         </div>
       </div>
@@ -93,6 +96,12 @@ export default {
   methods: {
     goBack: function () {
       this.$router.push({ name: 'league', params: { id: this.$route.params.league_id }, query: { mode: 'ROUNDS' } })
+    },
+
+    printRound: function () {
+    },
+
+    printPlayer: function () {
     },
 
     remove: function () {

@@ -30,7 +30,7 @@ export default {
   methods: {
     submit: function () {
       this.$axios.swiss.post('league', this.league)
-        .then(res => this.$router.push({ name: 'leagues' }))
+        .then(() => this.$router.push({ name: 'leagues' }))
     }
   }
 }

@@ -22,7 +22,7 @@
         </router-link>
         <router-link
            :to="{name: 'league', params: {league_id: league.id}}"
-           v-for="(league, index) in leagues"
+           v-for="league in leagues"
            :key="league.id"
            class="list-group-item list-group-item-action border-left-0 border-right-0"
            >

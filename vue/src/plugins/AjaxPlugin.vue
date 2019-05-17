@@ -3,11 +3,11 @@ import axios from 'axios'
 import router from '../router/index.js'
 
 export default {
-  install: function (Vue, options) {
+  install: function (Vue) {
     Vue.prototype.$axios = {
       swiss: {
         _request: function (method, path, params) {
-          return new Promise((resolve, reject) => {
+          return new Promise(resolve => {
             method(`http://swiss.teeroz.net:8080/swiss/api/${path}`, params)
             .then(res => resolve(res))
             .catch(e => {
@@ -20,7 +20,7 @@ export default {
                   return
                 }
 
-                console.error(e.response.data)
+                // console.error(e.response.data)
               }
               alert(e.toString())
             })
@@ -46,13 +46,15 @@ export default {
 
       facebook: {
         _request: function (method, path, params) {
-          return new Promise((resolve, reject) => {
+          return new Promise(resolve => {
             method(`https://graph.facebook.com/v2.11/${path}`, params)
             .then(res => resolve(res))
             .catch(e => {
+              /*
               if (e.response) {
                 console.error(e.response.data)
               }
+              */
               alert(e.toString())
             })
           })

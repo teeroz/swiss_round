@@ -73,7 +73,7 @@ export default {
       this.$refs.loading.start()
       this.$axios.swiss.put(`league/${this.$route.params.league_id}/player/${this.$route.params.player_id}`,
                             { 'family': this.familyMembers })
-        .then(res => this.$router.go(-1))
+        .then(() => this.$router.go(-1))
     }
   }
 }

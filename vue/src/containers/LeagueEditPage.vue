@@ -38,7 +38,7 @@ export default {
   methods: {
     submit: function () {
       this.$axios.swiss.put(`league/${this.$route.params.league_id}`, this.league)
-        .then(res => this.$router.push({ name: 'league', params: { id: this.$route.params.league_id } }))
+        .then(() => this.$router.push({ name: 'league', params: { id: this.$route.params.league_id } }))
     }
   }
 }

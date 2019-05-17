@@ -41,7 +41,7 @@
 
       <div class="list-group" v-if="mode === 'PLAYERS'">
         <router-link
-           v-for="(player, index) in players"
+           v-for="player in players"
            :to="{name: 'player', params: {league_id: player.league, player_id: player.id}}"
            :key="player.id"
            class="list-group-item list-group-item-action border-left-0 border-right-0"
