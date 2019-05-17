@@ -6,10 +6,19 @@
     <div class="container">
       <div class="card mt-3">
         <div class="card-body">
-          <div class="text-center mb-4">
-            <img src="/static/facebook-login.png" class="mb-2" width="222" height="49" @click="authenticate('facebook')" />
-            <img src="/static/kakao-login.png" class="mb-2" width="222" height="49" @click="authenticate('github')" />
+          <div class="text-center mb-5">
+            <div class="row justify-content-center mb-2">
+              <img src="/static/facebook-login.png" width="222" height="49" @click="authenticate('facebook')" />
+            </div>
+            <div class="row justify-content-center mb-2">
+              <img src="/static/kakao-login.png" width="222" height="49" @click="authenticate('github')" />
+            </div>
+            <div class="row justify-content-center mb-2">
+              <input ref="username" type="text" class="form-control mr-1" style="width: 150px;" placeholder="username" maxlength="20">
+              <button type="button" class="btn btn-primary" @click="login()">로그인</button>
+            </div>
           </div>
+
           <h5 class="card-title">변경사항</h5>
           <p class="card-text mb-4">
             <small>
@@ -56,7 +65,22 @@ export default {
           }
           this.$router.push({ name: 'leagues' })
         })
-    }
+    },
+
+    login: function () {
+      if (!this.$refs.username.value) {
+        alert('로그인 아이디를 입력해주세요.')
+        return
+      }
+
+      this.$auth.login({ username: this.$refs.username.value }).then(res => {
+        this.$auth.user = {
+          id: res.data.name,
+          name: res.data.name
+        }
+        this.$router.push({ name: 'leagues' })
+      })
+    },
   }
 }
 </script>

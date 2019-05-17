@@ -89,6 +89,22 @@ def authenticate_kakao(data: dict) -> dict:
 
 
 @csrf_exempt
+def v_auth_login(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        lib_user.register('local', data['username'], data['username'], 0)
+        token_info = {
+            "access_token": data['username'], 
+            "token_type": "bearer", 
+            "expires_in": 0, 
+            "name": data['username']
+        }
+        return JsonResponse(token_info)
+
+    return HttpResponseBadRequest('The {} method is not supported.'.format(request.method))
+
+
+@csrf_exempt
 def v_league(request: HttpRequest) -> HttpResponse:
     user = lib_user.get_user(request)
     if user is None:

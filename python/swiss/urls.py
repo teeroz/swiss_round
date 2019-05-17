@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('api/auth/facebook', views.v_auth_facebook, name='auth_facebook'),
     path('api/auth/kakao', views.v_auth_kakao, name='auth_kakao'),
+    path('api/auth/login', views.v_auth_login, name='auth_login'),
     path('api/leagues', views.v_leagues, name='leagues'),
     path('api/league', views.v_league, name='league'),
     path('api/league/<int:league_id>', views.v_a_league, name='a_league'),

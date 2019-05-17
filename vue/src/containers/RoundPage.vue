@@ -16,7 +16,7 @@
     <the-loading ref="loading">
       <div class="list-group">
         <span
-           v-for="match in matches"
+           v-for="(match, index) in matches"
            :key="match.id"
            class="list-group-item border-left-0 border-right-0"
            >
@@ -36,7 +36,7 @@
                 <template v-else>무</template>
               </button>
             </div>
-            <div><small>#{{ match.no }}</small></div>
+            <div><small>#{{ index + 1 }}</small></div>
             <div class="col-6 text-left">
               <button 
                 type="button" 
