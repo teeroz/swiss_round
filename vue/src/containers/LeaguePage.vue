@@ -111,7 +111,7 @@
             </thead>
             <tbody>
               <template v-for="player in players">
-                <tr>
+                <tr :key="player.id">
                   <td>{{ player.ranking }} 위</td>
                   <td>{{ player.name }}</td>
                   <td>

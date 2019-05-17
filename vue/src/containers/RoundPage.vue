@@ -84,11 +84,11 @@
             </thead>
             <tbody>
               <template v-for="matches in matchesByTable">
-                <tr>
+                <tr :key="matches[0].id">
                   <template v-for="match in matches">
-                    <td>{{ match.no }}</td>
-                    <td>{{ match.player1.name }}</td>
-                    <td>{{ match.player2.name }}</td>
+                    <td :key="match.id + '_1'">{{ match.no }}</td>
+                    <td :key="match.id + '_2'">{{ match.player1.name }}</td>
+                    <td :key="match.id + '_3'">{{ match.player2.name }}</td>
                   </template>
                 </tr>
               </template>
