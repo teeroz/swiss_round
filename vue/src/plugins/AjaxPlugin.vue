@@ -47,7 +47,7 @@ export default {
       facebook: {
         _request: function (method, path, params) {
           return new Promise(resolve => {
-            method(`https://graph.facebook.com/v2.11/${path}`, params)
+            method(`https://graph.facebook.com/v5.0/${path}`, params)
             .then(res => resolve(res))
             .catch(e => {
               /*
