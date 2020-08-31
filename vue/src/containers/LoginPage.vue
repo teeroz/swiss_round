@@ -1,15 +1,25 @@
 <template>
   <div>
     <the-navbar mode="HOME">
+      <div>
+        <button type="button" class="btn btn-secondary navbar-toggler" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="dropdown-menu" style="right: 0; left: auto;">
+          <button type="button" class="dropdown-item" @click="logout">로그아웃</button>
+        </div>
+      </div>
     </the-navbar>
 
     <div class="container">
       <div class="card mt-3">
         <div class="card-body">
           <div class="text-center mb-5">
+            <!--
             <div class="row justify-content-center mb-2">
               <img src="/static/facebook-login.png" width="222" height="49" @click="authenticate('facebook')" />
             </div>
+            -->
             <div class="row justify-content-center mb-2">
               <img src="/static/kakao-login.png" width="222" height="49" @click="authenticate('github')" />
             </div>
@@ -86,6 +96,11 @@ export default {
         this.$router.push({ name: 'leagues' })
       })
     },
+    
+    logout: function () {
+      this.$auth.logout()
+      this.$router.push({ name: 'login' })
+    }
   }
 }
 </script>
